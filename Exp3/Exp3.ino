@@ -29,7 +29,6 @@ int Hz = 7000;           // ejemplo: 1000 = 1KHz. Verificar si físicamente da l
 #define buzzerPin 8
 #define ledPin 12
 
-
 //======================================================================
 //                      DATOS NO MODIFICABLES
 //======================================================================
