@@ -16,9 +16,9 @@ Hz = Frecuencia del buzzer
 //======================================================================
 //                         DATOS MODIFICABLES
 //======================================================================
-int numCiclos = 2;
+int numCiclos = 4;
 //Ojo: para tiempos con punto decimal, ejemplo: 0.5 min = 30 segundos
-float Ds = 0.25;         // minutos
+float Ds = 0.5;         // minutos
 unsigned long Ti = 2;    // segundos
 unsigned long Dt = 1;    // segundos
 unsigned long IEt = 2;   // segundos
@@ -38,8 +38,11 @@ unsigned long tiempoAnterior = 0;
 unsigned long cicloAnterior = 0;
 
 // Estado del buzzer
-boolean buzzEstado = LOW;  //Activación del buzzer
-boolean ledEstado = LOW;
+bool buzzEstado = LOW;  //Activación del buzzer
+bool ledEstado = LOW;
+
+// Banderas
+bool flag1 = true;
 
 //======================================================================
 //                            FUNCIONES
@@ -52,15 +55,13 @@ unsigned long ConvertMinToSec(float Ds) {
   return Ds * 60;
 }
 
-
 //======================================================================
 //                              CÓDIGO
 //======================================================================
 void setup() {
   //Inicialización del puerto serial
   Serial.begin(9600);
-  while (!Serial)
-    ;
+  while (!Serial);
 
   pinMode(buzzerPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
@@ -73,7 +74,6 @@ void setup() {
   Ti = ConvertMilli(Ti);
   IEt = ConvertMilli(IEt);
   Dluz = ConvertMilli(Dluz);
-
 
   // Señal de inicio de sesión
   digitalWrite(ledPin, !digitalRead(ledPin));
@@ -89,19 +89,25 @@ void loop() {
     // Primer intervalo de tiempos, sólo se presenta al inicio de la sesión
     if (tiempoActual <= Ti) {
       delayMicroseconds(Ti);
-      //PRUEBA: Sí entra a los 2s
     } else {
+      Serial.print("Tiempo (seg): "); //PRUEBA
+      Serial.print(float(tiempoActual/1000)); //PRUEBA
       unsigned long cicloActual = millis() - Dluz - Ti;
       unsigned long ciclo = cicloActual - cicloAnterior;
       // Inicio de ciclos
       if (numCiclos > 0) {
 
-        Serial.print("cicloActual: ");
-        Serial.print(cicloActual);
-        Serial.print(" ");
-        Serial.print(ciclo);
-        // Presentación de Tono ///////////////
-        if (ciclo <= Dt) {
+        // Serial.print("cicloActual: "); //PRUEBA
+        // Serial.print(cicloActual); //PRUEBA
+        // Serial.print(" ");
+        // Serial.print(ciclo);
+        
+        if(flag1 == false)
+          noTone(buzzerPin);
+        
+        // Presentación de Tono  
+        if (ciclo <= Dt && flag1 == true) {
+
           Serial.print("\tPresentación del tono (Dt)\t");
           tone(buzzerPin, Hz);                  // Activación del buzzer
           buzzEstado = HIGH;                    //PRUEBA
@@ -111,24 +117,26 @@ void loop() {
         // Intervalo entre tonos
         if (ciclo > Dt && ciclo < Dt + IEt) {
           noTone(buzzerPin);
-          Serial.print("\tIntervalo entre tonos (IEt)\t");  //PRUEBA
+          //Serial.print("\tIntervalo entre tonos (IEt)\t");  //PRUEBA
           buzzEstado = LOW;                                 //PRUEBA
           digitalWrite(buzzerPin, buzzEstado);              //PRUEBA
         }
         // Reset de intervalo
         if (ciclo >= Dt + IEt && numCiclos != 0) {  // ciclo <= 3000
+          tone(buzzerPin, Hz);  // Activación del buzzer
           cicloAnterior = cicloActual;
           digitalWrite(buzzerPin, !digitalRead(buzzerPin));  //PRUEBA
-          Serial.print("\tPresentación del tono...(Dt)\t");
+          Serial.print("\tPresentación del tono (Dt)\t");
+        
+          flag1 = false;
           numCiclos -= 1;
-          tone(buzzerPin, Hz);  // Activación del buzzer
         }
         if (numCiclos == 0) {
+          Serial.print("No tono");
           noTone(buzzerPin);
         }
       }
-
-      Serial.print("\t\t numCiclos: ");  //PRUEBA
+      Serial.print("\t numCiclos: ");  //PRUEBA
       Serial.println(numCiclos);         //PRUEBA
       delay(1000);                       //PRUEBA
     }
