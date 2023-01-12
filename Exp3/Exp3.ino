@@ -3,7 +3,6 @@ Título:
 Autora proyecto: Isiris Guzmán
 Autora código: Jimena García
 Fecha: 19/12/2022
-
 numCiclos = número de veces que se repite un ciclo
 Ds = tiempo de la sesión en minutos
 Ti = tiempo de inicio
@@ -16,13 +15,13 @@ Hz = Frecuencia del buzzer
 //======================================================================
 //                         DATOS MODIFICABLES
 //======================================================================
-int numCiclos = 20;
+int numCiclos = 10;
 //Ojo: para tiempos con punto decimal, ejemplo: 0.5 min = 30 segundos
 float Ds = 0.5;          // minutos
-unsigned long Ti = 2;    // segundos
-unsigned long Dt = 1;    // segundos
-unsigned long IEt = 2;   // segundos
-unsigned long Dluz = 2;  // segundos
+unsigned long Ti = 1;    // segundos
+unsigned long Dt = 3;    // segundos
+unsigned long IEt = 3;   // segundos
+unsigned long Dluz = 1;  // segundos
 int Hz = 7000;           // ejemplo: 1000 = 1KHz. Verificar si físicamente da la frecuencia
 
 // Pines
@@ -117,7 +116,6 @@ void loop() {
         // Intervalo entre tonos
         if (ciclo > Dt && ciclo < Dt + IEt) {
           noTone(buzzerPin);
-          //Serial.print("\tIntervalo entre tonos (IEt)\t");  //PRUEBA
           buzzEstado = LOW;                     //PRUEBA
           digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
         }
@@ -128,7 +126,7 @@ void loop() {
           digitalWrite(buzzerPin, !digitalRead(buzzerPin));  //PRUEBA
           Serial.print("\tPresentación del tono (Dt)\t");
 
-          flag1 = false;
+          //flag1 = false;
           numCiclos -= 1;
         }
         if (numCiclos == 0) {
@@ -154,4 +152,3 @@ void loop() {
     }
   }
 }  //  >>>>>>>>>>>>>> FIN  de  loop( ) <<<<<<<<<<<<<<<<<
-
