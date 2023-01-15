@@ -17,10 +17,10 @@ Hz = Frecuencia del buzzer
 //======================================================================
 int numCiclos = 10;
 //Ojo: para tiempos con punto decimal, ejemplo: 0.5 min = 30 segundos
-float Ds = 0.5;          // minutos
+float Ds = 1;          // minutos
 unsigned long Ti = 1;    // segundos
-unsigned long Dt = 3;    // segundos
-unsigned long IEt = 3;   // segundos
+unsigned long Dt = 4;    // segundos
+unsigned long IEt = 1;   // segundos
 unsigned long Dluz = 1;  // segundos
 int Hz = 7000;           // ejemplo: 1000 = 1KHz. Verificar si físicamente da la frecuencia
 
@@ -130,7 +130,7 @@ void loop() {
           numCiclos -= 1;
         }
         if (numCiclos == 0) {
-          Serial.print("No tono");
+          Serial.print("NO TONO");
           noTone(buzzerPin);
         }
       }
