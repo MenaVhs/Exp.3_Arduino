@@ -76,7 +76,7 @@ void setup() {
 
   // Señal de inicio de sesión
   digitalWrite(ledPin, !digitalRead(ledPin));
-  delay(Dluz);  // 3s
+  delay(Dluz); 
   digitalWrite(ledPin, LOW);
 }
 

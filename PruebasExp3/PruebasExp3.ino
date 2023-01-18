@@ -11,7 +11,7 @@ IEt = Intervalo entre tonos
 Dluz = duración de la luz
 Hz = Frecuencia del buzzer
 */
-
+///////////////////// Checar si eliminar todos los buzzEstado
 //======================================================================
 //                         DATOS MODIFICABLES
 //======================================================================
@@ -109,20 +109,17 @@ void loop() {
           Serial.print("\tPresentacion del tono (Dt)\t");
           tone(buzzerPin, Hz);                  // Activación del buzzer
           buzzEstado = HIGH;                    //PRUEBA
-          // digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
         }
 
         // Intervalo entre tonos
         if (ciclo > Dt && ciclo < Dt + IEt) {
           noTone(buzzerPin);
           buzzEstado = LOW;                     //PRUEBA
-          // digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
         }
         // Reset de intervalo
         if (ciclo >= Dt + IEt && numCiclos != 0) {  // ciclo <= 3000
           //tone(buzzerPin, Hz);                      // Activación del buzzer
           cicloAnterior = cicloActual;
-          //digitalWrite(buzzerPin, !digitalRead(buzzerPin));  //PRUEBA
           Serial.print("\tPresentacion del tono (Dt)\t");
 
           numCiclos -= 1;
@@ -141,7 +138,7 @@ void loop() {
     noTone(buzzerPin);  // Asegurar que buzzer se apague.
     Serial.println("Fin \n");
     digitalWrite(ledPin, !digitalRead(ledPin));
-    delay(Dluz);  // 3s
+    delay(Dluz);
     digitalWrite(ledPin, !digitalRead(ledPin));
     digitalWrite(buzzerPin, LOW);  
 
