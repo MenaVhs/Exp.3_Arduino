@@ -15,12 +15,12 @@ Hz = Frecuencia del buzzer
 //======================================================================
 //                         DATOS MODIFICABLES
 //======================================================================
-int numCiclos = 10;
+int numCiclos = 5;
 //Ojo: para tiempos con punto decimal, ejemplo: 0.5 min = 30 segundos
-float Ds = 1;          // minutos
+float Ds = 2.3;          // minutos
 unsigned long Ti = 1;    // segundos
-unsigned long Dt = 3;    // segundos
-unsigned long IEt = 1;   // segundos
+unsigned long Dt = 60;    // segundos
+unsigned long IEt = 5;   // segundos
 unsigned long Dluz = 1;  // segundos
 int Hz = 7000;           // ejemplo: 1000 = 1KHz. Verificar si físicamente da la frecuencia
 
@@ -60,7 +60,7 @@ unsigned long ConvertMinToSec(float Ds) {
 void setup() {
   //Inicialización del puerto serial
   Serial.begin(9600);
-  //while (!Serial);
+  while (!Serial);
 
   pinMode(buzzerPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
@@ -106,26 +106,25 @@ void loop() {
 
         // Presentación de Tono
         if (ciclo <= Dt && flag1 == true) {
-          Serial.print("\tPresentación del tono (Dt)\t");
+          Serial.print("\tPresentacion del tono (Dt)\t");
           tone(buzzerPin, Hz);                  // Activación del buzzer
           buzzEstado = HIGH;                    //PRUEBA
-          digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
+          // digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
         }
 
         // Intervalo entre tonos
         if (ciclo > Dt && ciclo < Dt + IEt) {
           noTone(buzzerPin);
           buzzEstado = LOW;                     //PRUEBA
-          digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
+          // digitalWrite(buzzerPin, buzzEstado);  //PRUEBA
         }
         // Reset de intervalo
         if (ciclo >= Dt + IEt && numCiclos != 0) {  // ciclo <= 3000
-          tone(buzzerPin, Hz);                      // Activación del buzzer
+          //tone(buzzerPin, Hz);                      // Activación del buzzer
           cicloAnterior = cicloActual;
-          digitalWrite(buzzerPin, !digitalRead(buzzerPin));  //PRUEBA
-          Serial.print("\tPresentación del tono (Dt)\t");
+          //digitalWrite(buzzerPin, !digitalRead(buzzerPin));  //PRUEBA
+          Serial.print("\tPresentacion del tono (Dt)\t");
 
-          //flag1 = false;
           numCiclos -= 1;
         }
         if (numCiclos == 0) {
@@ -142,7 +141,7 @@ void loop() {
     noTone(buzzerPin);  // Asegurar que buzzer se apague.
     Serial.println("Fin \n");
     digitalWrite(ledPin, !digitalRead(ledPin));
-    delay(Dluz);  // 3s
+    delay(Dluz);  
     digitalWrite(ledPin, !digitalRead(ledPin));
     digitalWrite(buzzerPin, LOW);  
 
