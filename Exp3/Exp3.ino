@@ -1,7 +1,7 @@
 /*
 Título:
 Autora proyecto: Isiris Guzmán
-Autora código: Jimena García
+Autores del proyecto: Isiris Guzmán, Alejandro León y Varsovia Hernández
 Fecha: 19/12/2022
 numCiclos = número de veces que se repite un ciclo
 Ds = tiempo de la sesión en minutos
